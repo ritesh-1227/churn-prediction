@@ -1,0 +1,4 @@
+Recreate the Environment:
+If you need to recreate the environment on another machine or share it with someone, use:
+
+	conda env create -f environment.yml
