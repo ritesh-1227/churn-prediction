@@ -30,5 +30,7 @@ EXCLUDE_COLUMNS = [
     'churn_label',
     'churn_reason',
     'churn_score',
-    'cltv'
+    'cltv',
+    'latitude',
+    'longitude'
 ]

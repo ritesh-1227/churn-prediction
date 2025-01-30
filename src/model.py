@@ -15,13 +15,13 @@ class ChurnModel:
         )
         self.model_path = model_path
         
-    def train(self, X_train, y_train, preprocessor):
+    def train(self, X_train, y_train, preprocessor, feature_engineer):
         """
         Train the model and save preprocessor
         """
         self.model.fit(X_train, y_train)
         # Save preprocessor along with model
-        self.save_model(preprocessor)
+        self.save_model(preprocessor, feature_engineer)
         
     def predict(self, X):
         """
@@ -35,7 +35,7 @@ class ChurnModel:
         """
         return self.model.predict_proba(X)
     
-    def evaluate(self, X_test, y_test):
+    def evaluate(self, X_test, y_test, ):
         """
         Evaluate model performance
         """
@@ -55,20 +55,18 @@ class ChurnModel:
         print("\nTop 10 Important Features:")
         print(feature_importance.sort_values('importance', ascending=False).head(10))
         
-    def save_model(self, preprocessor, filename=MODEL_FILENAME):
-        """
-        Save model and preprocessor to disk
-        """
+    def save_model(self, preprocessor, feature_engineer, filename=MODEL_FILENAME):
+        """Save all components"""
         if not os.path.exists(self.model_path):
             os.makedirs(self.model_path)
         
-        # Save both model and preprocessor
         artifacts = {
             'model': self.model,
-            'preprocessor': preprocessor
+            'preprocessor': preprocessor,
+            'feature_engineer': feature_engineer
         }
         joblib.dump(artifacts, os.path.join(self.model_path, filename))
-        
+            
     def load_model(self, filename=MODEL_FILENAME):
         """
         Load model and preprocessor from disk
@@ -79,8 +77,9 @@ class ChurnModel:
     
         preprocessor = artifacts.get('preprocessor')
         model = artifacts.get('model')
+        feature_engineer = artifacts.get('feature_engineer')
         
         if preprocessor is None or model is None:
             raise ValueError("Missing 'preprocessor' or 'model' in loaded artifacts.")
     
-        return preprocessor, model
+        return preprocessor, feature_engineer, model

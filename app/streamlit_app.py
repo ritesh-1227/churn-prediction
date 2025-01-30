@@ -27,13 +27,14 @@ def load_models():
     
     preprocessor = artifacts.get('preprocessor')
     model = artifacts.get('model')
-    return preprocessor, model
+    feature_engineer = artifacts.get('feature_engineer')
+    return preprocessor, feature_engineer, model
 
 def main():
     st.title("Customer Churn Prediction")
     
     # Load preprocessor and model
-    preprocessor, model = load_models()
+    preprocessor, feature_engineer, model = load_models()
     
     # Create input form
     st.header("Customer Information")
@@ -98,8 +99,12 @@ def main():
         try:
             # Preprocess the input data with is_training=False
             processed_data = preprocessor.preprocess(input_data, is_training=False)
+
+            # Then engineer features
+            engineered_data = feature_engineer.transform(processed_data)
+            
             # Prepare features with is_training=False
-            X, _ = preprocessor.prepare_features(processed_data, is_training=False)
+            X, _ = preprocessor.prepare_features(engineered_data, is_training=False)
             
             # Make prediction
             prediction_proba = model.predict_proba(X)
