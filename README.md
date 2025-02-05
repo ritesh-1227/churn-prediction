@@ -72,7 +72,7 @@ The system considers various customer attributes:
 - Service subscriptions
 
 ## Deployment
-The application is deployed on Streamlit Cloud and can be accessed at: [your-app-url]
+The application is deployed on Streamlit Cloud and can be accessed at: [https://ayerv-churn-prediction.streamlit.app/]
 
 ## Future Improvements
 - [ ] Batch prediction capabilities
